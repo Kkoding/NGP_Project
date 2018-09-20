@@ -89,8 +89,8 @@ void collision()
 
 				if (g_Client.player[i].is_protect)
 					g_Client.player[i].is_protect = false;
-				//	else
-				//		g_Client.player[i].connect = false;
+				else
+					g_Client.player[i].connect = false;
 
 				EnterCriticalSection(&cs);
 				Bullet_Initialize(j);
@@ -241,22 +241,22 @@ void Bullet_Update()
 		}
 	}
 
-	////승패처리
-	//int win = 0;
-	//int lose = 0;
-	//for (int i = 0; i < MAX_USER; ++i) {
-	//	if (!g_Client.player[i].connect)
-	//		lose++;
-	//	else
-	//		win = i;
-	//}
+	//승패처리
+	int win = 0;
+	int lose = 0;
+	for (int i = 0; i < MAX_USER; ++i) {
+		if (!g_Client.player[i].connect)
+			lose++;
+		else
+			win = i;
+	}
 
-	//if (lose == MAX_USER - 1) {
-	//	for (int i = 0; i < MAX_USER; ++i) {
-	//		if (win == i) g_Client.player[i].state = State_Win;
-	//		else g_Client.player[i].state = State_Lose;
-	//	}
-	//}
+	if (lose == MAX_USER - 1) {
+		for (int i = 0; i < MAX_USER; ++i) {
+			if (win == i) g_Client.player[i].state = State_Win;
+			else g_Client.player[i].state = State_Lose;
+		}
+	}
 
 }
 DWORD WINAPI MainProcessPacket(LPVOID arg)
@@ -336,11 +336,8 @@ DWORD WINAPI ProcessPacket(LPVOID arg)
 						g_Client.player[ci_id].x -= 10;
 				}
 			}
-			//std::cout << g_NowTime - g_itemTime << std::endl;
 		}
-
 		send(client_sock, (char*)&g_Client, sizeof(sc_packet), 0);
-		//std::cout << packet.keyboard << std::endl;
 	}
 	return 0;
 }
@@ -352,6 +349,7 @@ int main(int argc, char *argv[])
 
 	int retval;
 	Initialize();
+
 	// 윈속 초기화
 	WSADATA wsa;
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
@@ -409,7 +407,6 @@ int main(int argc, char *argv[])
 		g_Client.player[id].y = 450;
 		g_Client.id = id;
 		g_Client.start = false;
-		//send(client_sock, (char*)&len, sizeof(int), 0);
 		send(client_sock, (char*)&g_Client, sizeof(sc_packet), 0);
 
 

@@ -54,16 +54,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 	// 응용 프로그램 초기화를 수행합니다.
 	if (!InitInstance(hInstance, nCmdShow)) return FALSE;
-
 	HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE((IDC_NGP_CLIENT)));
 	MSG msg;
 	msg.message = WM_NULL;
-
-	float preTime = GetTickCount();
+	float preTime = timeGetTime() *0.001f;
 
 	CMainGame* Game = new CMainGame();
-	
-	//CTS->Initi();
+
 	Game->Initi();
 	// 기본 메시지 루프입니다.
 	while (msg.message != WM_QUIT)
@@ -76,9 +73,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 				DispatchMessage(&msg);
 			}
 		}
-		if (GetTickCount() - preTime > 0.03f)
+		if (timeGetTime() * 0.001f - preTime > 0.03f)
 		{
-			preTime = GetTickCount();
+			preTime = timeGetTime() * 0.001f;
 			Game->Update();
 			Game->Render();
 		}
@@ -140,7 +137,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 	HDC dc = GetDC(g_hWnd);
 	int x = GetDeviceCaps(dc, HORZRES) - 760;
 	int y = GetDeviceCaps(dc, VERTRES) - 840;
-	MoveWindow(g_hWnd, 300,50, rt.right - rt.left, rt.bottom - rt.top, TRUE);
+	MoveWindow(g_hWnd, 300, 50, rt.right - rt.left, rt.bottom - rt.top, TRUE);
 	ReleaseDC(g_hWnd, dc);
 
 	return TRUE;
@@ -167,28 +164,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		case VK_ESCAPE: PostQuitMessage(0); break;
 		}
 		break;
-	//case WM_SOCKET:
-	//{
-	//	if (WSAGETSELECTERROR(lParam))
-	//	{
-	//		err_display("ERROR : WSAGETSELECTERROR");
-	//		closesocket((SOCKET)wParam);
-	//		
-	//		break;
-	//	}
-	//	switch (WSAGETSELECTEVENT(lParam))
-	//	{
-	//	case FD_READ:
-	//	//	CTS->ReadPacket((SOCKET)wParam);
-	//		//Reading((Socket)wParam);
-	//		break;
-	//	case FD_CLOSE:
-	//		closesocket((SOCKET)wParam);
-	//		break;
-	//	}
+		//case WM_SOCKET:
+		//{
+		//	if (WSAGETSELECTERROR(lParam))
+		//	{
+		//		err_display("ERROR : WSAGETSELECTERROR");
+		//		closesocket((SOCKET)wParam);
+		//		
+		//		break;
+		//	}
+		//	switch (WSAGETSELECTEVENT(lParam))
+		//	{
+		//	case FD_READ:
+		//	//	CTS->ReadPacket((SOCKET)wParam);
+		//		//Reading((Socket)wParam);
+		//		break;
+		//	case FD_CLOSE:
+		//		closesocket((SOCKET)wParam);
+		//		break;
+		//	}
 
-	//}
-	//break;
+		//}
+		//break;
 	case WM_DESTROY: PostQuitMessage(0); break;
 	default: return DefWindowProc(hWnd, message, wParam, lParam);
 	}

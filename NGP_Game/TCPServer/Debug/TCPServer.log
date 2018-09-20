@@ -1,0 +1,2 @@
+﻿  TCPServer.cpp
+c:\users\pkgor\desktop\ngp_wj\ngp_project\ngp_game\tcpserver\tcpserver.cpp(10): fatal error C1083: 포함 파일을 열 수 없습니다. 'protocol.h': No such file or directory

@@ -106,7 +106,7 @@ void CNetwork::Render(HDC mem0dc, HDC mem1dc)
 {
 
 	//잔디 맵 그려줌
-	for (int i = 0; i < WIN_WIDTH / m_GrassImage.GetWidth();++i)
+	for (int i = 0; i < WIN_WIDTH / m_GrassImage.GetWidth(); ++i)
 	{
 		for (int j = 0; j < WIN_HEIGHT / m_GrassImage.GetHeight(); ++j)
 		{
@@ -128,26 +128,28 @@ void CNetwork::Render(HDC mem0dc, HDC mem1dc)
 	{
 		for (int j = 0; j < 2; ++j)
 		{
-			m_TileImage.TransparentBlt(mem0dc, WINCX - 50 + 600*j, WINCY + 50 * i, m_TileImage.GetWidth()
+			m_TileImage.TransparentBlt(mem0dc, WINCX - 50 + 600 * j, WINCY + 50 * i, m_TileImage.GetWidth()
 				, m_TileImage.GetHeight(), RGB(255, 255, 255));
 		}
 	}
 
+	// Texture
 	if (false == m_client.start) {
 		TextOut(mem0dc, 100, 100, "잠시만 기다려주세요", 19);
 		return;
 	}
 	else if (m_client.player[m_Clientid].state == State_Win) {
 		TextOut(mem0dc, 100, 100, "게임에서 승리했습니다", 21);
-		/*m_WinImage..TransparentBlt(mem0dc, 200,200, m_WinImage.GetWidth()
-			, m_WinImage.GetHeight(), RGB(255, 255, 255));*/
+		m_WinImage.TransparentBlt(mem0dc, (WINCX + WCXSIZE) / 2, (WINCY + WCYSIZE) / 2, m_WinImage.GetWidth()
+			, m_WinImage.GetHeight(), RGB(255, 255, 255));
 	}
 	else if (m_client.player[m_Clientid].state == State_Lose) {
 		TextOut(mem0dc, 100, 100, "게임에서 패배했습니다", 21);
-		/*m_FailImage..TransparentBlt(mem0dc, 200, 200, m_FailImage.GetWidth()
-			, m_FailImage.GetHeight(), RGB(255, 255, 255));*/
+		m_FailImage.TransparentBlt(mem0dc, (WINCX + WCXSIZE) / 2, (WINCY + WCYSIZE) / 2, m_FailImage.GetWidth()
+			, m_FailImage.GetHeight(), RGB(255, 255, 255));
 	}
 	else TextOut(mem0dc, 100, 100, "게임이 시작되었습니다.", 22);
+
 
 	for (int i = 0; i < MAX_USER; ++i)
 	{
@@ -180,16 +182,11 @@ void CNetwork::Render(HDC mem0dc, HDC mem1dc)
 
 	if (TRUE == m_client.item.state)
 	{
-		m_ItemImage.TransparentBlt(mem0dc, m_client.item.x, m_client.item.y, m_ItemImage.GetWidth() 
+		m_ItemImage.TransparentBlt(mem0dc, m_client.item.x, m_client.item.y, m_ItemImage.GetWidth()
 			, m_ItemImage.GetHeight(), RGB(255, 255, 255));
 	}
 
 	for (int i = 0; i < OBSTACLE_NUM; ++i) {
-		/*Rectangle(mem0dc,
-			m_client.obstacle[i].x,
-			m_client.obstacle[i].y,
-			m_client.obstacle[i].x + OBSTACLE_SIZE,
-			m_client.obstacle[i].y + OBSTACLE_SIZE);*/
 		m_FireImage.TransparentBlt(mem0dc, m_client.obstacle[i].x - 5, m_client.obstacle[i].y - 10, m_FireImage.GetWidth(), m_FireImage.GetHeight(), RGB(255, 255, 255));
 	}
 }

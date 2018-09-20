@@ -10,9 +10,7 @@ void CMainGame::Initi()
 
 void CMainGame::Render()
 {
-
 	g_hdc = GetDC(g_hWnd);
-
 
 	HDC mem0dc, mem1dc;
 	HBITMAP hBit, PlayerBit, BulletBit;
@@ -20,7 +18,6 @@ void CMainGame::Render()
 	static BITMAP bmp;
 	GetClientRect(g_hWnd, &rt);
 
-	//g_hdc = BeginPaint(g_hWnd, &g_ps);
 	mem0dc = CreateCompatibleDC(g_hdc);
 	hBit = CreateCompatibleBitmap(g_hdc, rt.right, rt.bottom);
 	SelectObject(mem0dc, hBit);
@@ -28,9 +25,8 @@ void CMainGame::Render()
 	FillRect(mem0dc, &rt, RGB(0, 0, 0));
 
 
-	//더블버퍼링 시작
+	/////	더블버퍼링 시작
 	//////////////////////////
-	//Rectangle(mem0dc, WINCX, WINCY, WINCX + WCXSIZE, WINCY + WCYSIZE);
 
 	PlayerBit = (HBITMAP)LoadBitmap(g_hInst, MAKEINTRESOURCE(IDB_BITMAP1));
 	SelectObject(mem1dc, PlayerBit);
@@ -38,15 +34,12 @@ void CMainGame::Render()
 	CNetwork::GetInstance()->Render(mem0dc, mem1dc);
 
 	//////////////////////////
-	//더블버퍼링 끝
+	//////	더블버퍼링 끝
 	BitBlt(g_hdc, 0, 0, rt.right, rt.bottom, mem0dc, 0, 0, SRCCOPY);
 	DeleteObject(hBit);
 	DeleteObject(PlayerBit);
-	//DeleteObject(BulletBit);
 	DeleteDC(mem0dc);
 	DeleteDC(mem1dc);
-	//BitBlt(g_hdc, 0, 0, , , , , , SRCCOPY);
-
 	ReleaseDC(g_hWnd, g_hdc);
 }
 
